@@ -9,15 +9,30 @@ class TransactionProvider with ChangeNotifier {
     return transactions;
   }
 
-  void addTransaction(Transactions transaction) async{
-    var db = await TransactionDB(dbName: 'transactions.db');
-    var keyID = await db.insertDatabase(transaction);
-    this.transactions = await db.loadAllData();
+  //ดึงข้อมูลมาแสดงผลในตอนแรก
+  void initData() async {
+    var db = TransactionDB(dbName: 'transactions.db');
+    //ดึงข้อมูลมาแสดงผล
+    transactions = await db.loadAllData();
     notifyListeners();
   }
 
-  void deleteTransaction(int index) {
-    transactions.removeAt(index);
-    notifyListeners(); 
+  void addTransaction(Transactions statement) async {
+    var db = TransactionDB(dbName: 'transactions.db');
+    //บันทึกข้อมูล
+    await db.insertData(statement);
+    //ดึงข้อมูลมาแสดงผล
+    transactions = await db.loadAllData();
+    notifyListeners();
+  }
+
+  // Delete a transaction by matching properties
+  void deleteTransaction(Transactions statement) async {
+    var db = TransactionDB(dbName: 'transactions.db');
+    await db.deleteData(statement);
+
+    // Reload transactions after deletion
+    transactions = await db.loadAllData();
+    notifyListeners();
   }
 }

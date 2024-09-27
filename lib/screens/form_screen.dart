@@ -12,7 +12,6 @@ class FormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
         appBar: AppBar(
           title: const Text('แบบฟอร์มข้อมูล'),
@@ -31,6 +30,7 @@ class FormScreen extends StatelessWidget {
                     if (str!.isEmpty) {
                       return 'กรุณากรอกข้อมูล';
                     }
+                    return null;
                   },
                 ),
                 TextFormField(
@@ -48,28 +48,28 @@ class FormScreen extends StatelessWidget {
                     } catch (e) {
                       return 'กรุณากรอกข้อมูลเป็นตัวเลข';
                     }
+                    return null;
                   },
                 ),
                 TextButton(
                     child: const Text('บันทึก'),
                     onPressed: () {
-                          if (formKey.currentState!.validate())
-                            {
-                              // create transaction data object
-                              var statement = Transactions(
-                                  title: titleController.text,
-                                  amount: double.parse(amountController.text),
-                                  date: DateTime.now()
-                                  );
-                            
-                              // add transaction data object to provider
-                              var provider = Provider.of<TransactionProvider>(context, listen: false);
-                              
-                              provider.addTransaction(statement);
+                      if (formKey.currentState!.validate()) {
+                        // create transaction data object
+                        var statement = Transactions(
+                            title: titleController.text,
+                            amount: double.parse(amountController.text),
+                            date: DateTime.now());
 
-                              Navigator.pop(context);
-                            }
-                        })
+                        // add transaction data object to provider
+                        var provider = Provider.of<TransactionProvider>(context,
+                            listen: false);
+
+                        provider.addTransaction(statement);
+
+                        Navigator.pop(context);
+                      }
+                    })
               ],
             )));
   }
