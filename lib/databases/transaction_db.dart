@@ -24,6 +24,7 @@ class TransactionDB {
 
     var keyID = store.add(db, {
       "title": statement.title,
+      "imageUrl": statement.imageUrl,
       "amount": statement.amount,
       "date": statement.date.toIso8601String()
     });
@@ -42,6 +43,7 @@ class TransactionDB {
       finder: Finder(
         filter: Filter.and([
           Filter.equals('title', statement.title),
+          Filter.equals('imageUrl', statement.imageUrl),
           Filter.equals('amount', statement.amount),
           Filter.equals('date', statement.date.toIso8601String())
         ]),
@@ -64,6 +66,7 @@ class TransactionDB {
       transactions.add(
         Transactions(
           title: record['title'].toString(),
+          imageUrl: record['imageUrl'].toString(),
           amount: double.parse(record['amount'].toString()),
           date: DateTime.parse(record['date'].toString()),
         ),

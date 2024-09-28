@@ -46,16 +46,18 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         body: TabBarView(
           children: [
+            HomeScreen(),
             const HomeScreen2(),
             FormScreen(),
           ],
         ),
         bottomNavigationBar: const TabBar(
           tabs: [
+            Tab(icon: Icon(Icons.home), text: 'หน้าหลัก'),
             Tab(icon: Icon(Icons.home), text: 'หน้าหลัก'),
             Tab(icon: Icon(Icons.account_circle), text: 'แบบฟอร์ม'),
           ],

@@ -40,7 +40,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 2,
           shrinkWrap: true,
-          childAspectRatio: (150 / 236),
+          childAspectRatio: (150 / 246),
           children: List.generate(provider.transactions.length, (index) {
             var transaction = provider.transactions[index];
 
@@ -64,17 +64,20 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                     onTap: () {},
                     child: Container(
                       margin: const EdgeInsets.all(10),
-                      // Display the image URL from the transaction
-                      child: Image.network(
-                        'https://baro7.com/cdn/shop/files/solo-leveling-only-i-level-up-manhwa-297985.jpg?v=1721243007&width=480',
-                        // transaction.imageUrl ??
-                        //     'https://via.placeholder.com/150',
-                        fit: BoxFit.contain,
+                      // ใช้ SizedBox เพื่อควบคุมขนาดของรูปภาพ
+                      child: SizedBox(
+                        height: 200,
+                        width: 150,
+                        child: Image.network(
+                          transaction.imageUrl ??
+                              'https://via.placeholder.com/150',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 1),
                     child: Align(
                       alignment: Alignment.center,
                       child: Column(
@@ -82,15 +85,18 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                           Text(
                             transaction.title,
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
+                            overflow:
+                                TextOverflow.ellipsis, // ตัดข้อความด้วย ...
+                            maxLines: 1, // กำหนดให้แสดงข้อความในบรรทัดเดียว
                           ),
                           Text(
                             DateFormat('dd MMM yyyy').format(transaction.date),
                             style: const TextStyle(
-                              fontSize: 14,
+                              fontSize: 12,
                               color: Colors.grey,
                             ),
                           ),
@@ -98,8 +104,10 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                       ),
                     ),
                   ),
+                  const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.delete),
+                    iconSize: 20,
                     onPressed: () {
                       // Confirm deletion with a dialog
                       showDialog(

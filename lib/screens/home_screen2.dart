@@ -1,6 +1,8 @@
+import 'package:account/provider/transaction_provider.dart';
 import 'package:account/screens/form_screen.dart';
 import 'package:account/widgets/items_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen2 extends StatefulWidget {
   const HomeScreen2({super.key});
@@ -18,6 +20,7 @@ class _HomeScreen2State extends State<HomeScreen2>
     super.initState();
     _tabController = TabController(vsync: this, length: 4, initialIndex: 0);
     _tabController.addListener(_handleTabSelection);
+    Provider.of<TransactionProvider>(context, listen: false).initData();
   }
 
   _handleTabSelection() {
@@ -105,10 +108,10 @@ class _HomeScreen2State extends State<HomeScreen2>
               const SizedBox(height: 10),
               Center(
                 child: [
-                  ItemsWidget(),
-                  ItemsWidget(),
-                  ItemsWidget(),
-                  ItemsWidget(),
+                  const ItemsWidget(),
+                  const ItemsWidget(),
+                  const ItemsWidget(),
+                  const ItemsWidget(),
                 ][_tabController.index],
               )
             ],
