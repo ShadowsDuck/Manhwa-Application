@@ -1,16 +1,25 @@
-import 'package:account/models/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:account/models/transactions.dart';
 import 'package:account/provider/transaction_provider.dart';
 
-class FormScreen extends StatelessWidget {
-  FormScreen({super.key});
+class FormScreen extends StatefulWidget {
+  const FormScreen({super.key});
 
+  @override
+  FormScreenState createState() => FormScreenState(); // เปลี่ยนเป็น public
+}
+
+class FormScreenState extends State<FormScreen> {
   final formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
-  final imageUrlController =
-      TextEditingController(); // เพิ่ม controller สำหรับ URL รูปภาพ
-  final amountController = TextEditingController();
+  final authorsController = TextEditingController();
+  final synopsisController = TextEditingController();
+  final imageUrlController = TextEditingController();
+
+  String? selectedGenre;
+  String? selectedStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -20,74 +29,148 @@ class FormScreen extends StatelessWidget {
       ),
       body: Form(
         key: formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'ชื่อรายการ',
-              ),
-              autofocus: true,
-              controller: titleController,
-              validator: (String? str) {
-                if (str!.isEmpty) {
-                  return 'กรุณากรอกข้อมูล';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'จำนวนเงิน',
-              ),
-              keyboardType: TextInputType.number,
-              controller: amountController,
-              validator: (String? input) {
-                try {
-                  double amount = double.parse(input!);
-                  if (amount < 0) {
-                    return 'กรุณากรอกข้อมูลมากกว่า 0';
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'ชื่อรายการ',
+                ),
+                autofocus: true,
+                controller: titleController,
+                validator: (String? str) {
+                  if (str!.isEmpty) {
+                    return 'กรุณากรอกข้อมูล';
                   }
-                } catch (e) {
-                  return 'กรุณากรอกข้อมูลเป็นตัวเลข';
-                }
-                return null;
-              },
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'URL รูปภาพ', // เพิ่มช่องกรอก URL รูปภาพ
+                  return null;
+                },
               ),
-              controller:
-                  imageUrlController, // ใช้ controller เพื่อเก็บค่า URL รูปภาพ
-              validator: (String? str) {
-                if (str!.isEmpty) {
-                  return 'กรุณากรอก URL ของรูปภาพ';
-                }
-                return null;
-              },
-            ),
-            TextButton(
-              child: const Text('บันทึก'),
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  // สร้าง object ของ transaction
-                  var statement = Transactions(
-                    title: titleController.text,
-                    imageUrl: imageUrlController.text,
-                    amount: double.parse(amountController.text),
-                    date: DateTime.now(),
-                  );
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'คนแต่ง',
+                ),
+                autofocus: true,
+                controller: authorsController,
+                validator: (String? str) {
+                  if (str!.isEmpty) {
+                    return 'กรุณากรอกข้อมูล';
+                  }
+                  return null;
+                },
+              ),
+              // Dropdown สำหรับประเภท
+              DropdownButtonFormField2<String>(
+                decoration: const InputDecoration(
+                  labelText: 'ประเภท',
+                ),
+                value: selectedGenre,
+                isExpanded: true,
+                hint: const Text('เลือกประเภท'),
+                items: ['ต่อสู้', 'แฟนตาซี', 'โรแมนติก', 'อื่นๆ']
+                    .map((item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                          ),
+                        ))
+                    .toList(),
+                validator: (value) {
+                  if (value == null) {
+                    return 'กรุณาเลือกประเภท';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    selectedGenre = value as String;
+                  });
+                },
+                onSaved: (value) {
+                  selectedGenre = value.toString();
+                },
+              ),
+              // Dropdown สำหรับสถานะ
+              DropdownButtonFormField2(
+                decoration: const InputDecoration(
+                  labelText: 'สถานะ',
+                ),
+                value: selectedStatus,
+                isExpanded: true,
+                hint: const Text('เลือกสถานะ'),
+                items: ['กำลังดำเนิน', 'จบแล้ว', 'หยุดชั่วคราว']
+                    .map((item) => DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                          ),
+                        ))
+                    .toList(),
+                validator: (value) {
+                  if (value == null) {
+                    return 'กรุณาเลือกสถานะ';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  setState(() {
+                    selectedStatus = value as String;
+                  });
+                },
+                onSaved: (value) {
+                  selectedStatus = value.toString();
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'เรื่องย่อ',
+                ),
+                autofocus: true,
+                controller: synopsisController,
+                validator: (String? str) {
+                  if (str!.isEmpty) {
+                    return 'กรุณากรอกข้อมูล';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'URL รูปภาพ',
+                ),
+                controller: imageUrlController,
+                validator: (String? str) {
+                  if (str!.isEmpty) {
+                    return 'กรุณากรอก URL ของรูปภาพ';
+                  }
+                  return null;
+                },
+              ),
+              TextButton(
+                child: const Text('บันทึก'),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    // สร้าง object ของ transaction
+                    var statement = Transactions(
+                      title: titleController.text,
+                      authors: authorsController.text,
+                      genres: selectedGenre!,
+                      status: selectedStatus!,
+                      synopsis: synopsisController.text,
+                      imageUrl: imageUrlController.text,
+                      date: DateTime.now(),
+                    );
 
-                  // เพิ่ม transaction data ไปที่ provider
-                  var provider =
-                      Provider.of<TransactionProvider>(context, listen: false);
-                  provider.addTransaction(statement);
+                    // เพิ่ม transaction data ไปที่ provider
+                    var provider = Provider.of<TransactionProvider>(context,
+                        listen: false);
+                    provider.addTransaction(statement);
 
-                  Navigator.pop(context);
-                }
-              },
-            ),
-          ],
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

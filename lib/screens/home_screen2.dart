@@ -2,6 +2,7 @@ import 'package:account/provider/transaction_provider.dart';
 import 'package:account/screens/form_screen.dart';
 import 'package:account/widgets/items_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen2 extends StatefulWidget {
@@ -57,9 +58,11 @@ class _HomeScreen2State extends State<HomeScreen2>
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        SystemNavigator.pop();
+                      },
                       child: Icon(
-                        Icons.account_circle_rounded,
+                        Icons.exit_to_app_rounded,
                         color: Colors.black.withOpacity(0.5),
                         size: 35,
                       ),
@@ -121,7 +124,7 @@ class _HomeScreen2State extends State<HomeScreen2>
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return FormScreen();
+            return const FormScreen();
           }));
         },
         backgroundColor: const Color.fromARGB(255, 255, 248, 247),

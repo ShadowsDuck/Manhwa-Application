@@ -1,5 +1,4 @@
-import 'package:account/screens/form_screen.dart';
-import 'package:account/screens/home_screen.dart';
+import 'package:account/screens/favorite_screen.dart';
 import 'package:account/screens/home_screen2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,21 +44,19 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
+    return const DefaultTabController(
+      length: 2,
       child: Scaffold(
         body: TabBarView(
           children: [
-            HomeScreen(),
-            const HomeScreen2(),
-            FormScreen(),
+            HomeScreen2(),
+            FavoriteScreen(),
           ],
         ),
-        bottomNavigationBar: const TabBar(
+        bottomNavigationBar: TabBar(
           tabs: [
             Tab(icon: Icon(Icons.home), text: 'หน้าหลัก'),
-            Tab(icon: Icon(Icons.home), text: 'หน้าหลัก'),
-            Tab(icon: Icon(Icons.account_circle), text: 'แบบฟอร์ม'),
+            Tab(icon: Icon(Icons.favorite_rounded), text: 'กดถูกใจ'),
           ],
         ),
       ),

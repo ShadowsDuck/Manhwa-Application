@@ -1,6 +1,5 @@
 import 'package:account/provider/transaction_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ItemsWidget extends StatefulWidget {
@@ -11,12 +10,6 @@ class ItemsWidget extends StatefulWidget {
 }
 
 class _ItemsWidgetState extends State<ItemsWidget> {
-  List<String> img = [
-    'Yor',
-    'Solo-Leveling',
-    'Omniscient-Reader',
-  ];
-
   @override
   Widget build(BuildContext context) {
     // Wrap the grid in a Consumer to listen for changes in TransactionProvider
@@ -40,7 +33,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
           physics: const NeverScrollableScrollPhysics(),
           crossAxisCount: 2,
           shrinkWrap: true,
-          childAspectRatio: (150 / 246),
+          childAspectRatio: (150 / 247),
           children: List.generate(provider.transactions.length, (index) {
             var transaction = provider.transactions[index];
 
@@ -64,14 +57,26 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                     onTap: () {},
                     child: Container(
                       margin: const EdgeInsets.all(10),
-                      // ใช้ SizedBox เพื่อควบคุมขนาดของรูปภาพ
-                      child: SizedBox(
-                        height: 200,
-                        width: 150,
-                        child: Image.network(
-                          transaction.imageUrl ??
-                              'https://via.placeholder.com/150',
-                          fit: BoxFit.cover,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            spreadRadius: 1, // ความกว้างของเงา
+                            blurRadius: 5, // ความเบลอของเงา
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: SizedBox(
+                          height: 200,
+                          width: 150,
+                          child: Image.network(
+                            transaction.imageUrl,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),
@@ -94,9 +99,9 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                             maxLines: 1, // กำหนดให้แสดงข้อความในบรรทัดเดียว
                           ),
                           Text(
-                            DateFormat('dd MMM yyyy').format(transaction.date),
+                            transaction.status,
                             style: const TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: Colors.grey,
                             ),
                           ),

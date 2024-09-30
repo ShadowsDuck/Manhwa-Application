@@ -24,8 +24,12 @@ class TransactionDB {
 
     var keyID = store.add(db, {
       "title": statement.title,
+      "authors": statement.authors,
+      "genres": statement.genres,
+      "status": statement.status,
+      "synopsis": statement.synopsis,
       "imageUrl": statement.imageUrl,
-      "amount": statement.amount,
+      // "amount": statement.amount,
       "date": statement.date.toIso8601String()
     });
     db.close();
@@ -43,8 +47,12 @@ class TransactionDB {
       finder: Finder(
         filter: Filter.and([
           Filter.equals('title', statement.title),
+          Filter.equals('authors', statement.authors),
+          Filter.equals('genres', statement.genres),
+          Filter.equals('status', statement.status),
+          Filter.equals('synopsis', statement.synopsis),
           Filter.equals('imageUrl', statement.imageUrl),
-          Filter.equals('amount', statement.amount),
+          // Filter.equals('amount', statement.amount),
           Filter.equals('date', statement.date.toIso8601String())
         ]),
       ),
@@ -66,8 +74,12 @@ class TransactionDB {
       transactions.add(
         Transactions(
           title: record['title'].toString(),
+          authors: record['authors'].toString(),
+          genres: record['genres'].toString(),
+          status: record['status'].toString(),
+          synopsis: record['synopsis'].toString(),
           imageUrl: record['imageUrl'].toString(),
-          amount: double.parse(record['amount'].toString()),
+          // amount: double.parse(record['amount'].toString()),
           date: DateTime.parse(record['date'].toString()),
         ),
       );
