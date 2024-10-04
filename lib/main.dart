@@ -3,6 +3,7 @@ import 'package:account/screens/home_screen2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:account/provider/transaction_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,12 +22,15 @@ class MyApp extends StatelessWidget {
         }),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Manhwa Application',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+          textTheme: GoogleFonts.baiJamjureeTextTheme(
+            Theme.of(context).textTheme,
+          ),
         ),
-        home: const MyHomePage(title: 'แอพบัญชี'),
+        home: const MyHomePage(
+          title: 'Manhwa Application',
+        ),
       ),
     );
   }

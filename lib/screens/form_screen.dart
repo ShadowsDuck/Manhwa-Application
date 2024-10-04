@@ -25,7 +25,7 @@ class FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('แบบฟอร์มข้อมูล'),
+        title: const Text('ข้อมูลมันฮวา'),
       ),
       body: Form(
         key: formKey,
@@ -34,7 +34,7 @@ class FormScreenState extends State<FormScreen> {
             children: [
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'ชื่อรายการ',
+                  labelText: 'ชื่อเรื่อง',
                 ),
                 autofocus: true,
                 controller: titleController,
@@ -47,7 +47,7 @@ class FormScreenState extends State<FormScreen> {
               ),
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'คนแต่ง',
+                  labelText: 'ผู้แต่ง',
                 ),
                 autofocus: true,
                 controller: authorsController,
@@ -145,8 +145,16 @@ class FormScreenState extends State<FormScreen> {
                   return null;
                 },
               ),
-              TextButton(
-                child: const Text('บันทึก'),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, // สีพื้นหลังของปุ่ม
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20), // ทำให้เป็นวงรี
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                ),
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
                     // สร้าง object ของ transaction
@@ -168,6 +176,10 @@ class FormScreenState extends State<FormScreen> {
                     Navigator.pop(context);
                   }
                 },
+                child: const Text(
+                  'บันทึก',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),

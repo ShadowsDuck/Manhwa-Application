@@ -1,4 +1,5 @@
 import 'package:account/provider/transaction_provider.dart';
+import 'package:account/screens/single_item_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,7 +55,21 @@ class _ItemsWidgetState extends State<ItemsWidget> {
               child: Column(
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SingleItemScreen(
+                            title: transaction.title,
+                            author: transaction.authors,
+                            genre: transaction.genres,
+                            status: transaction.status,
+                            synopsis: transaction.synopsis,
+                            imageUrl: transaction.imageUrl,
+                          ),
+                        ),
+                      );
+                    },
                     child: Container(
                       margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(

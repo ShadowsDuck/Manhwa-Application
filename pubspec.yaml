@@ -43,6 +43,7 @@ dependencies:
   path: ^1.9.0
   image_picker: ^1.1.2
   dropdown_button2: ^2.0.0
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -60,10 +61,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-  assets:
-    - images/Yor.png
-    - images/Solo-Leveling.png
-    - images/Omniscient-Reader.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -92,11 +89,13 @@ flutter:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
-  #   - family: Trajan Pro
+  #   - family: Kanit
   #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
+  #       - asset: fonts/Kanit-Regular.ttf
+  #       - asset: fonts/Kanit-Italic.ttf
+  #         style: italic
+  #       - asset: fonts/Kanit-Bold.ttf
   #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
+  #   - family: Playfair
+  #     fonts:
+  #       - asset: fonts/PlayfairDisplay-Regular.ttf
