@@ -26,12 +26,11 @@ class TransactionProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Delete a transaction by matching properties
-  void deleteTransaction(Transactions statement) async {
+  void deleteTransaction(int? index) async {
     var db = TransactionDB(dbName: 'transactions.db');
-    await db.deleteData(statement);
-
-    // Reload transactions after deletion
+    //ลบข้อมูล
+    await db.deleteData(index);
+    //ดึงข้อมูลมาแสดงผล
     transactions = await db.loadAllData();
     notifyListeners();
   }

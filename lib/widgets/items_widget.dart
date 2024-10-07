@@ -143,7 +143,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                             ),
                             TextButton(
                               onPressed: () {
-                                provider.deleteTransaction(transaction);
+                                provider.deleteTransaction(transaction.keyID);
                                 Navigator.of(context).pop();
                               },
                               child: const Text('Delete'),

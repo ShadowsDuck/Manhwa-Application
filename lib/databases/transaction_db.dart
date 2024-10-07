@@ -29,37 +29,18 @@ class TransactionDB {
       "status": statement.status,
       "synopsis": statement.synopsis,
       "imageUrl": statement.imageUrl,
-      // "amount": statement.amount,
       "date": statement.date.toIso8601String()
     });
     db.close();
     return keyID;
   }
 
-  // Delete a transaction by matching properties
-  Future<int> deleteData(Transactions statement) async {
+  deleteData(int? index) async {
     var db = await openDatabase();
     var store = intMapStoreFactory.store('expense');
 
-    // Use the properties of the transaction to find and delete it
-    var result = await store.delete(
-      db,
-      finder: Finder(
-        filter: Filter.and([
-          Filter.equals('title', statement.title),
-          Filter.equals('authors', statement.authors),
-          Filter.equals('genres', statement.genres),
-          Filter.equals('status', statement.status),
-          Filter.equals('synopsis', statement.synopsis),
-          Filter.equals('imageUrl', statement.imageUrl),
-          // Filter.equals('amount', statement.amount),
-          Filter.equals('date', statement.date.toIso8601String())
-        ]),
-      ),
-    );
-
-    db.close();
-    return result;
+    await store.delete(db,
+        finder: Finder(filter: Filter.equals(Field.key, index)));
   }
 
   //ใหม่ => เก่า, มาก => น้อย false
@@ -73,13 +54,13 @@ class TransactionDB {
     for (var record in snapshot) {
       transactions.add(
         Transactions(
+          keyID: record.key,
           title: record['title'].toString(),
           authors: record['authors'].toString(),
           genres: record['genres'].toString(),
           status: record['status'].toString(),
           synopsis: record['synopsis'].toString(),
           imageUrl: record['imageUrl'].toString(),
-          // amount: double.parse(record['amount'].toString()),
           date: DateTime.parse(record['date'].toString()),
         ),
       );

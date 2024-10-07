@@ -1,4 +1,5 @@
 class Transactions {
+  final int? keyID;
   final String title;
   final String authors;
   final String genres;
@@ -8,6 +9,7 @@ class Transactions {
   final DateTime date;
 
   Transactions({
+    this.keyID,
     required this.title,
     required this.authors,
     required this.genres,

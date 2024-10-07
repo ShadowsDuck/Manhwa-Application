@@ -159,6 +159,7 @@ class FormScreenState extends State<FormScreen> {
                   if (formKey.currentState!.validate()) {
                     // สร้าง object ของ transaction
                     var statement = Transactions(
+                      keyID: null,
                       title: titleController.text,
                       authors: authorsController.text,
                       genres: selectedGenre!,
