@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 class ItemsWidget extends StatefulWidget {
   final String searchQuery;
-  final String selectedGenre; // รับประเภทที่เลือกจาก TabBar
+  final String selectedGenre;
 
   const ItemsWidget(
       {super.key, required this.searchQuery, required this.selectedGenre});
@@ -20,15 +20,11 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   Widget build(BuildContext context) {
     return Consumer<TransactionProvider>(
       builder: (context, provider, child) {
-        // กรองข้อมูลตามชื่อและประเภท
         List<Transactions> filteredTransactions =
             provider.transactions.where((transaction) {
-          // ตรวจสอบว่าตรงกับประเภทที่เลือกใน TabBar หรือไม่
           bool matchesGenre = widget.selectedGenre == 'ทั้งหมด' ||
               transaction.genres.toLowerCase() ==
                   widget.selectedGenre.toLowerCase();
-
-          // ตรวจสอบว่าชื่อตรงกับคำค้นหาหรือไม่
           bool matchesSearchQuery = transaction.title
               .toLowerCase()
               .contains(widget.searchQuery.toLowerCase());
@@ -95,7 +91,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                         borderRadius: BorderRadius.circular(15),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
+                            color: Colors.black.withOpacity(0.1),
                             spreadRadius: 1,
                             blurRadius: 5,
                             offset: const Offset(0, 5),
@@ -143,32 +139,63 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                     ),
                   ),
                   const Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    iconSize: 20,
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Confirm Delete'),
-                          content:
-                              const Text('Are you sure you want to delete?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.of(context).pop(),
-                              child: const Text('Cancel'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // ส่วนของดาวและข้อความ 5.0
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Colors.yellow[700],
+                              size: 18,
                             ),
-                            TextButton(
-                              onPressed: () {
-                                provider.deleteTransaction(transaction.keyID);
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Delete'),
+                            const SizedBox(width: 4),
+                            const Text(
+                              '5.0',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
                           ],
                         ),
-                      );
-                    },
+                        // ส่วนของไอคอนถังขยะ
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          color: Colors.red,
+                          iconSize: 20,
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('ยืนยันการลบข้อมูล'),
+                                content: const Text(
+                                    'คุณต้องการลบเรื่องนี้ทิ้งใช่ไหม?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text('ไม่'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      provider
+                                          .deleteTransaction(transaction.keyID);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('ใช่'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

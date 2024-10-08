@@ -1,4 +1,4 @@
-import 'package:account/screens/favorite_screen.dart';
+import 'package:account/screens/account.dart';
 import 'package:account/screens/home_screen2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -54,13 +54,13 @@ class _MyHomePageState extends State<MyHomePage> {
         body: TabBarView(
           children: [
             HomeScreen2(),
-            FavoriteScreen(),
+            AccountScreen(),
           ],
         ),
         bottomNavigationBar: TabBar(
           tabs: [
-            Tab(icon: Icon(Icons.home), text: 'หน้าหลัก'),
-            Tab(icon: Icon(Icons.favorite_rounded), text: 'กดถูกใจ'),
+            Tab(icon: Icon(Icons.home_rounded), text: 'หน้าหลัก'),
+            Tab(icon: Icon(Icons.account_circle_rounded), text: 'แนะนำตัว'),
           ],
         ),
       ),

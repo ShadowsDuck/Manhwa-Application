@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SingleItemScreen extends StatelessWidget {
   final String title;
@@ -172,6 +173,7 @@ class SingleItemScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            const SizedBox(height: 30),
                           ],
                         ),
                       ),
@@ -181,54 +183,24 @@ class SingleItemScreen extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Heart Icon with background
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.favorite_border_rounded,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      // Handle heart icon press
-                    },
-                  ),
-                ),
-                // Edit Content Button on the right
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle edit content button press
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black87,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 90, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text(
-                    'Edit Content',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
+      floatingActionButton: SizedBox(
+        width: 50, // กำหนดความกว้าง
+        height: 50, // กำหนดความสูง
+        child: FloatingActionButton(
+          backgroundColor: Colors.deepPurple,
+          child: const Icon(
+            Icons.share,
+            size: 25, // ปรับขนาดไอคอน
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Share.share('แชร์มันฮวา เรื่อง: $title ไปให้เพื่อนของคุณดูเร็ว!');
+          },
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
