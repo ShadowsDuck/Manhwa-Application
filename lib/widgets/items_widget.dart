@@ -1,10 +1,15 @@
+import 'package:account/models/transactions.dart';
 import 'package:account/provider/transaction_provider.dart';
 import 'package:account/screens/single_item_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ItemsWidget extends StatefulWidget {
-  const ItemsWidget({super.key});
+  final String searchQuery;
+  final String selectedGenre; // รับประเภทที่เลือกจาก TabBar
+
+  const ItemsWidget(
+      {super.key, required this.searchQuery, required this.selectedGenre});
 
   @override
   State<ItemsWidget> createState() => _ItemsWidgetState();
@@ -13,11 +18,25 @@ class ItemsWidget extends StatefulWidget {
 class _ItemsWidgetState extends State<ItemsWidget> {
   @override
   Widget build(BuildContext context) {
-    // Wrap the grid in a Consumer to listen for changes in TransactionProvider
     return Consumer<TransactionProvider>(
       builder: (context, provider, child) {
-        // Check if transactions exist, otherwise display a fallback message
-        if (provider.transactions.isEmpty) {
+        // กรองข้อมูลตามชื่อและประเภท
+        List<Transactions> filteredTransactions =
+            provider.transactions.where((transaction) {
+          // ตรวจสอบว่าตรงกับประเภทที่เลือกใน TabBar หรือไม่
+          bool matchesGenre = widget.selectedGenre == 'ทั้งหมด' ||
+              transaction.genres.toLowerCase() ==
+                  widget.selectedGenre.toLowerCase();
+
+          // ตรวจสอบว่าชื่อตรงกับคำค้นหาหรือไม่
+          bool matchesSearchQuery = transaction.title
+              .toLowerCase()
+              .contains(widget.searchQuery.toLowerCase());
+
+          return matchesGenre && matchesSearchQuery;
+        }).toList();
+
+        if (filteredTransactions.isEmpty) {
           return Center(
             child: Container(
               alignment: Alignment.center,
@@ -35,8 +54,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
           crossAxisCount: 2,
           shrinkWrap: true,
           childAspectRatio: (150 / 247),
-          children: List.generate(provider.transactions.length, (index) {
-            var transaction = provider.transactions[index];
+          children: List.generate(filteredTransactions.length, (index) {
+            var transaction = filteredTransactions[index];
 
             return Container(
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -77,8 +96,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.15),
-                            spreadRadius: 1, // ความกว้างของเงา
-                            blurRadius: 5, // ความเบลอของเงา
+                            spreadRadius: 1,
+                            blurRadius: 5,
                             offset: const Offset(0, 5),
                           ),
                         ],
@@ -109,9 +128,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             ),
-                            overflow:
-                                TextOverflow.ellipsis, // ตัดข้อความด้วย ...
-                            maxLines: 1, // กำหนดให้แสดงข้อความในบรรทัดเดียว
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                           Text(
                             transaction.status,
@@ -129,7 +147,6 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                     icon: const Icon(Icons.delete),
                     iconSize: 20,
                     onPressed: () {
-                      // Confirm deletion with a dialog
                       showDialog(
                         context: context,
                         builder: (context) => AlertDialog(

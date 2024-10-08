@@ -15,11 +15,21 @@ class HomeScreen2 extends StatefulWidget {
 class _HomeScreen2State extends State<HomeScreen2>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  String _searchQuery = ''; // คำค้นหา
+  final List<String> genres = [
+    "ทั้งหมด",
+    "ต่อสู้",
+    "แฟนตาซี",
+    "โรแมนติก",
+    "อื่นๆ"
+  ];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 4, initialIndex: 0);
+    _tabController = TabController(
+        vsync: this,
+        length: genres.length); // เปลี่ยน length เป็น genres.length
     _tabController.addListener(_handleTabSelection);
     Provider.of<TransactionProvider>(context, listen: false).initData();
   }
@@ -96,27 +106,27 @@ class _HomeScreen2State extends State<HomeScreen2>
                       ),
                       prefixIcon: const Icon(Icons.search),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                    },
                   ),
                 ),
               ),
               TabBar(
                   controller: _tabController,
                   unselectedLabelColor: Colors.black.withOpacity(0.5),
-                  tabs: const [
-                    Tab(text: "ต่อสู้"),
-                    Tab(text: "แฟนตาซี"),
-                    Tab(text: "โรแมนติก"),
-                    Tab(text: "อื่นๆ"),
-                  ]),
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 5),
+                  tabs: genres.map((genre) => Tab(text: genre)).toList()),
               const SizedBox(height: 10),
               Center(
-                child: [
-                  const ItemsWidget(),
-                  const ItemsWidget(),
-                  const ItemsWidget(),
-                  const ItemsWidget(),
-                ][_tabController.index],
-              )
+                child: ItemsWidget(
+                  searchQuery: _searchQuery,
+                  selectedGenre:
+                      genres[_tabController.index], // ส่งประเภทที่เลือกไป
+                ),
+              ),
             ],
           ),
         ),
