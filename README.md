@@ -1,4 +1,4 @@
-# account
+# Manhwa Application
 
 A new Flutter project.
 
