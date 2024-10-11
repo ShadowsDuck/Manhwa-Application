@@ -4,14 +4,16 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:account/models/transactions.dart';
 import 'package:account/provider/transaction_provider.dart';
 
-class FormScreen extends StatefulWidget {
-  FormScreen({super.key});
+class EditScreen extends StatefulWidget {
+  final Transactions statement;
+
+  EditScreen({super.key, required this.statement});
 
   @override
-  State<FormScreen> createState() => _FormScreenState();
+  State<EditScreen> createState() => _EditScreenState();
 }
 
-class _FormScreenState extends State<FormScreen> {
+class _EditScreenState extends State<EditScreen> {
   final formKey = GlobalKey<FormState>();
   final titleController = TextEditingController();
   final authorsController = TextEditingController();
@@ -22,10 +24,22 @@ class _FormScreenState extends State<FormScreen> {
   String? selectedStatus;
 
   @override
+  void initState() {
+    super.initState();
+    // กำหนดค่าเริ่มต้นจากข้อมูลเดิมของ statement
+    titleController.text = widget.statement.title;
+    authorsController.text = widget.statement.authors;
+    synopsisController.text = widget.statement.synopsis;
+    imageUrlController.text = widget.statement.imageUrl;
+    selectedGenre = widget.statement.genres;
+    selectedStatus = widget.statement.status;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ข้อมูลมันฮวา'),
+        title: const Text('แก้ไขข้อมูลมันฮวา'),
       ),
       body: Form(
         key: formKey,
@@ -36,7 +50,6 @@ class _FormScreenState extends State<FormScreen> {
                 decoration: const InputDecoration(
                   labelText: 'ชื่อเรื่อง',
                 ),
-                autofocus: true,
                 controller: titleController,
                 validator: (String? str) {
                   if (str!.isEmpty) {
@@ -49,7 +62,6 @@ class _FormScreenState extends State<FormScreen> {
                 decoration: const InputDecoration(
                   labelText: 'ผู้แต่ง',
                 ),
-                autofocus: true,
                 controller: authorsController,
                 validator: (String? str) {
                   if (str!.isEmpty) {
@@ -90,7 +102,7 @@ class _FormScreenState extends State<FormScreen> {
                 },
               ),
               // Dropdown สำหรับสถานะ
-              DropdownButtonFormField2(
+              DropdownButtonFormField2<String>(
                 decoration: const InputDecoration(
                   labelText: 'สถานะ',
                 ),
@@ -124,7 +136,6 @@ class _FormScreenState extends State<FormScreen> {
                 decoration: const InputDecoration(
                   labelText: 'เรื่องย่อ',
                 ),
-                autofocus: true,
                 controller: synopsisController,
                 validator: (String? str) {
                   if (str!.isEmpty) {
@@ -157,9 +168,8 @@ class _FormScreenState extends State<FormScreen> {
                 ),
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    // สร้าง object ของ transaction
                     var statement = Transactions(
-                      keyID: null,
+                      keyID: widget.statement.keyID,
                       title: titleController.text,
                       authors: authorsController.text,
                       genres: selectedGenre!,
@@ -168,16 +178,17 @@ class _FormScreenState extends State<FormScreen> {
                       imageUrl: imageUrlController.text,
                     );
 
-                    // เพิ่ม transaction data ไปที่ provider
+                    // อัปเดตข้อมูลผ่าน provider
                     var provider = Provider.of<TransactionProvider>(context,
                         listen: false);
-                    provider.addTransaction(statement);
+                    provider.updateTransaction(statement);
 
-                    Navigator.pop(context);
+                    // ส่งข้อมูลกลับไปที่หน้าก่อนหน้า
+                    Navigator.pop(context, statement);
                   }
                 },
                 child: const Text(
-                  'บันทึก',
+                  'แก้ไขข้อมูล',
                   style: TextStyle(color: Colors.white),
                 ),
               ),

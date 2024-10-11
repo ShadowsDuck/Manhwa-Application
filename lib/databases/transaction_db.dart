@@ -29,7 +29,6 @@ class TransactionDB {
       "status": statement.status,
       "synopsis": statement.synopsis,
       "imageUrl": statement.imageUrl,
-      "date": statement.date.toIso8601String()
     });
     db.close();
     return keyID;
@@ -61,10 +60,25 @@ class TransactionDB {
           status: record['status'].toString(),
           synopsis: record['synopsis'].toString(),
           imageUrl: record['imageUrl'].toString(),
-          date: DateTime.parse(record['date'].toString()),
         ),
       );
     }
     return transactions;
+  }
+
+  updateDatabase(Transactions statement) async {
+    var db = await this.openDatabase();
+    var store = intMapStoreFactory.store('expense');
+    var filter = Finder(filter: Filter.equals(Field.key, statement.keyID));
+    var result = store.update(db, finder: filter, {
+      "title": statement.title,
+      "authors": statement.authors,
+      "genres": statement.genres,
+      "status": statement.status,
+      "synopsis": statement.synopsis,
+      "imageUrl": statement.imageUrl,
+    });
+    db.close();
+    print('update result: $result');
   }
 }

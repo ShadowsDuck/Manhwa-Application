@@ -6,7 +6,6 @@ class Transactions {
   final String status;
   final String synopsis;
   final String imageUrl;
-  final DateTime date;
 
   Transactions({
     this.keyID,
@@ -16,6 +15,5 @@ class Transactions {
     required this.status,
     required this.synopsis,
     required this.imageUrl,
-    required this.date,
   });
 }

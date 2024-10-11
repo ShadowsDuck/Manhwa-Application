@@ -38,7 +38,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
               alignment: Alignment.center,
               height: MediaQuery.of(context).size.height * 0.55,
               child: const Text(
-                'No contents available.',
+                'โปรดเพิ่มมันฮวาที่คุณสนใจ',
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -52,6 +52,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
           childAspectRatio: (150 / 247),
           children: List.generate(filteredTransactions.length, (index) {
             var transaction = filteredTransactions[index];
+            var statement = provider.transactions[index];
 
             return Container(
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -74,14 +75,9 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SingleItemScreen(
-                            title: transaction.title,
-                            author: transaction.authors,
-                            genre: transaction.genres,
-                            status: transaction.status,
-                            synopsis: transaction.synopsis,
-                            imageUrl: transaction.imageUrl,
-                          ),
+                          builder: (context) {
+                            return SingleItemScreen(statement: statement);
+                          },
                         ),
                       );
                     },
